@@ -3,246 +3,230 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventory / Product Management System</title>
+  <title>Orgho's Inventory — Stock &amp; Product Control</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
   <header class="page-header">
     <div class="header-inner">
-      <h1>Inventory / Product Management System</h1>
-      <span class="db-badge">MySQL</span>
+      <div class="brand">
+        <div class="brand-mark" aria-label="Orgho's Inventory Logo">
+          <svg class="brand-logo-svg" viewBox="0 0 40 40" width="38" height="38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="#181308" stroke="url(#gold-border)" stroke-width="1.5"/>
+            <!-- Elegant interlocking 'O' and diamond crown for Orgho's Inventory -->
+            <circle cx="20" cy="20" r="11" stroke="url(#gold-grad)" stroke-width="2.5" fill="none"/>
+            <circle cx="20" cy="20" r="6" stroke="#c9a84c" stroke-width="1" stroke-dasharray="2 2" fill="none"/>
+            <!-- Center faceted apparel gem/cross -->
+            <path d="M20 12L22.5 17.5L28 20L22.5 22.5L20 28L17.5 22.5L12 20L17.5 17.5L20 12Z" fill="url(#gold-grad)"/>
+            <circle cx="20" cy="20" r="2.2" fill="#181308"/>
+            <defs>
+              <linearGradient id="gold-grad" x1="12" y1="12" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#fae392"/>
+                <stop offset="0.5" stop-color="#c9a84c"/>
+                <stop offset="1" stop-color="#8a6f2e"/>
+              </linearGradient>
+              <linearGradient id="gold-border" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#c9a84c"/>
+                <stop offset="1" stop-color="#4a3b15"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Orgho's <em>Inventory</em></span>
+          <span class="brand-sub">Clothing Stock &amp; Product Management</span>
+        </div>
+      </div>
+
     </div>
   </header>
 
   <div class="container">
     <div id="status-banner" class="status-banner"></div>
 
-    <div class="dashboard-grid">
-      <section class="summary-grid">
-        <article class="summary-card">
-          <div class="summary-label">Total Products</div>
-          <p id="sum-products" class="summary-value">0</p>
-        </article>
+    <section class="summary-grid">
+      <article class="summary-card">
+        <div class="summary-label">Total Products</div>
+        <p id="sum-products" class="summary-value">—</p>
+        <div class="summary-foot">Unique items</div>
+      </article>
+      <article class="summary-card">
+        <div class="summary-label">Total Stock Units</div>
+        <p id="sum-stock" class="summary-value">—</p>
+        <div class="summary-foot">Units on hand</div>
+      </article>
+      <article class="summary-card">
+        <div class="summary-label">Average Unit Price</div>
+        <p id="avg-price" class="summary-value">—</p>
+        <div class="summary-foot">Across catalog</div>
+      </article>
+      <article class="summary-card summary-card--accent">
+        <div class="summary-label">Total Stock Valuation</div>
+        <p id="sum-valuation" class="summary-value">—</p>
+        <div class="summary-foot">Total inventory worth</div>
+      </article>
+    </section>
 
-        <article class="summary-card">
-          <div class="summary-label">Total Stock Units</div>
-          <p id="sum-stock" class="summary-value">0</p>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-label">Average Unit Price</div>
-          <p id="avg-price" class="summary-value">৳0.00</p>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-label">Total Stock Valuation</div>
-          <p id="sum-valuation" class="summary-value">৳0.00</p>
-        </article>
-      </section>
-
-      <main class="workspace">
-        <section class="panel records-panel">
-          <form id="filter-form" class="filter-bar">
-            <div class="form-group">
-              <label for="search-input">Search Inventory</label>
-              <input
-                type="search"
-                id="search-input"
-                name="search"
-                placeholder="Search garment, category, or manager..."
-                autocomplete="off"
-              >
-            </div>
-
-            <div class="form-group">
-              <label id="category-filter-label" for="category-filter">Filter Category</label>
-              <select id="category-filter" name="category">
-                <option value="">All Categories</option>
-              </select>
-            </div>
-
-            <button type="reset" id="reset-filter-btn" class="btn-secondary">Clear</button>
-          </form>
-
-          <div tabindex="0" role="region" aria-labelledby="inventory-table-caption" class="table-wrapper">
-            <table>
-              <caption id="inventory-table-caption">Saved Inventory Records</caption>
-              <thead>
-                <tr>
-                  <th class="col-id">ID</th>
-                  <th class="col-name">Product Name</th>
-                  <th class="col-center">Category</th>
-                  <th class="col-center">Stock Qty</th>
-                  <th class="col-center">Unit Price (৳)</th>
-                  <th class="col-center">Managed By</th>
-                  <th class="col-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="inventory-tbody">
-                <tr>
-                  <td colspan="7" class="empty-state">Loading inventory records...</td>
-                </tr>
-              </tbody>
-            </table>
+    <div class="workspace">
+      <main class="records-panel panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <h2 class="panel-title">Inventory Records</h2>
+            <span id="record-count-badge" class="count-pill">—</span>
           </div>
-        </section>
-
-        <div class="sidebar-stack">
-          <section class="panel">
-            <form id="add-product-form" novalidate>
-              <h2 class="panel-title form-heading">Add New Product</h2>
-
-              <div class="form-group">
-                <label for="add-name">Product Name *</label>
-                <span class="hint">Enter product name (max 100 chars)</span>
-                <input
-                  type="text"
-                  id="add-name"
-                  name="product_name"
-                  required
-                  maxlength="100"
-                  placeholder="e.g., Heavyweight Drop Shoulder Tee"
-                >
-                <div class="error-msg">Please enter a product name.</div>
-              </div>
-
-              <div class="form-group">
-                <label id="add-category-label" for="add-category">Category *</label>
-                <select id="add-category" name="category" required>
-                  <option value="" disabled selected>Select category...</option>
-                </select>
-                <div id="add-category-error" class="error-msg">Please choose a category.</div>
-              </div>
-
-              <div class="form-group">
-                <label for="add-stock">Stock Quantity *</label>
-                <span class="hint">Available units in stock</span>
-                <input
-                  type="number"
-                  id="add-stock"
-                  name="stock_quantity"
-                  required
-                  min="0"
-                  step="1"
-                  placeholder="e.g., 60"
-                >
-                <div class="error-msg">Enter a valid stock quantity.</div>
-              </div>
-
-              <div class="form-group">
-                <label for="add-price">Unit Price (BDT ৳) *</label>
-                <span class="hint">Price per unit in Taka</span>
-                <input
-                  type="number"
-                  id="add-price"
-                  name="unit_price"
-                  required
-                  min="0"
-                  max="99999999.99"
-                  step="0.01"
-                  placeholder="e.g., 850.00"
-                >
-                <div class="error-msg">Enter a valid price in BDT.</div>
-              </div>
-
-              <div class="form-group">
-                <label for="add-manager">Managed By *</label>
-                <span class="hint">Store manager name</span>
-                <input
-                  type="text"
-                  id="add-manager"
-                  name="managed_by"
-                  required
-                  maxlength="60"
-                  placeholder="e.g., Orgho"
-                >
-                <div class="error-msg">Please enter the manager's name.</div>
-              </div>
-
-              <button type="submit" id="add-submit-btn" class="btn-primary">Save Product Record</button>
-            </form>
-          </section>
-
-          <section class="panel">
-            <div class="panel-header">
-              <h2 class="panel-title">Manage Categories</h2>
-              <span id="cat-count-badge" class="count-pill">0</span>
+          <form id="filter-form" class="filter-bar">
+            <div class="search-wrap">
+              <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input type="search" id="search-input" name="search" placeholder="Search product, category, manager…" autocomplete="off">
             </div>
+            <select id="category-filter" name="category">
+              <option value="">All Categories</option>
+            </select>
+            <button type="reset" id="reset-filter-btn" class="btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </form>
+        </div>
 
-            <form id="add-category-form" novalidate>
-              <label for="new-category-name">Category Name *</label>
-              <span class="hint">Add or remove product categories</span>
-              <div class="cat-input-group">
-                <input
-                  type="text"
-                  id="new-category-name"
-                  name="category_name"
-                  required
-                  maxlength="50"
-                  placeholder="e.g., Denim Jacket"
-                  autocomplete="off"
-                >
-                <button type="submit" id="add-cat-btn" class="btn-primary">Add</button>
-              </div>
-              <div id="new-cat-error" class="error-msg">Please enter a category name.</div>
-            </form>
-
-            <ul id="category-list" class="category-list"></ul>
-          </section>
+        <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="inventory-table-caption">
+          <table>
+            <caption id="inventory-table-caption" class="sr-only">Inventory Records</caption>
+            <thead>
+              <tr>
+                <th class="col-id">ID</th>
+                <th class="col-name">Product Name</th>
+                <th class="col-center">Category</th>
+                <th class="col-center">Stock</th>
+                <th class="col-right">Unit Price</th>
+                <th class="col-center">Manager</th>
+                <th class="col-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-tbody">
+              <tr>
+                <td colspan="7" class="empty-state">Loading records…</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </main>
+
+      <aside class="sidebar-stack">
+        <section class="panel">
+          <h2 class="panel-title">Add Product</h2>
+          <form id="add-product-form" novalidate>
+            <div class="form-group">
+              <label for="add-name">Product Name</label>
+              <input type="text" id="add-name" name="product_name" required maxlength="100" placeholder="e.g. Heavyweight Drop Shoulder Tee">
+              <div class="error-msg">Product name is required.</div>
+            </div>
+            <div class="form-group">
+              <label for="add-category">Category</label>
+              <select id="add-category" name="category" required>
+                <option value="" disabled selected>Select category…</option>
+              </select>
+              <div id="add-category-error" class="error-msg">Select a category.</div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="add-stock">Stock Qty</label>
+                <input type="number" id="add-stock" name="stock_quantity" required min="0" step="1" placeholder="0">
+                <div class="error-msg">Valid quantity required.</div>
+              </div>
+              <div class="form-group">
+                <label for="add-price">Price (BDT)</label>
+                <input type="number" id="add-price" name="unit_price" required min="0" max="99999999.99" step="0.01" placeholder="0.00">
+                <div class="error-msg">Valid price required.</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="add-manager">Managed By</label>
+              <input type="text" id="add-manager" name="managed_by" required maxlength="60" placeholder="e.g. Orgho">
+              <div class="error-msg">Manager name is required.</div>
+            </div>
+            <button type="submit" id="add-submit-btn" class="btn-primary">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              Save to Inventory
+            </button>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Categories</h2>
+            <span id="cat-count-badge" class="count-pill">0</span>
+          </div>
+          <form id="add-category-form" novalidate>
+            <label for="new-category-name">New Category</label>
+            <div class="cat-input-group">
+              <input type="text" id="new-category-name" name="category_name" required maxlength="50" placeholder="e.g. Denim Jacket" autocomplete="off">
+              <button type="submit" id="add-cat-btn" class="btn-secondary">Add</button>
+            </div>
+            <div id="new-cat-error" class="error-msg">Category name is required.</div>
+          </form>
+          <ul id="category-list" class="category-list"></ul>
+        </section>
+      </aside>
     </div>
   </div>
 
   <dialog id="edit-dialog">
-    <h2 id="edit-dialog-title">Update Product Record</h2>
+    <div class="dialog-header">
+      <h2 id="edit-dialog-title">Edit Product</h2>
+      <button type="button" id="edit-cancel-btn" class="btn-icon-close" aria-label="Close">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
     <form id="edit-product-form" novalidate>
       <input type="hidden" id="edit-id" name="product_id">
-
       <div class="form-group">
-        <label for="edit-name">Product Name *</label>
+        <label for="edit-name">Product Name</label>
         <input type="text" id="edit-name" name="product_name" required maxlength="100">
-        <div class="error-msg">Please enter a product name.</div>
+        <div class="error-msg">Product name is required.</div>
       </div>
-
       <div class="form-group">
-        <label id="edit-category-label" for="edit-category">Category *</label>
+        <label for="edit-category">Category</label>
         <select id="edit-category" name="category" required></select>
-        <div id="edit-category-error" class="error-msg">Please choose a category.</div>
+        <div id="edit-category-error" class="error-msg">Select a category.</div>
       </div>
-
-      <div class="form-group">
-        <label for="edit-stock">Stock Quantity *</label>
-        <input type="number" id="edit-stock" name="stock_quantity" required min="0" step="1">
-        <div class="error-msg">Enter a valid stock quantity.</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="edit-stock">Stock Qty</label>
+          <input type="number" id="edit-stock" name="stock_quantity" required min="0" step="1">
+          <div class="error-msg">Valid quantity required.</div>
+        </div>
+        <div class="form-group">
+          <label for="edit-price">Price (BDT)</label>
+          <input type="number" id="edit-price" name="unit_price" required min="0" max="99999999.99" step="0.01">
+          <div class="error-msg">Valid price required.</div>
+        </div>
       </div>
-
       <div class="form-group">
-        <label for="edit-price">Unit Price (BDT ৳) *</label>
-        <input type="number" id="edit-price" name="unit_price" required min="0" max="99999999.99" step="0.01">
-        <div class="error-msg">Enter a valid price in BDT.</div>
-      </div>
-
-      <div class="form-group">
-        <label for="edit-manager">Managed By *</label>
+        <label for="edit-manager">Managed By</label>
         <input type="text" id="edit-manager" name="managed_by" required maxlength="60">
-        <div class="error-msg">Please enter the manager's name.</div>
+        <div class="error-msg">Manager name is required.</div>
       </div>
-
       <div class="dialog-actions">
-        <button type="button" id="edit-cancel-btn" class="btn-secondary">Cancel</button>
-        <button type="submit" id="edit-submit-btn" class="btn-primary">Update Changes</button>
+        <button type="button" id="edit-cancel-btn-2" class="btn-ghost">Cancel</button>
+        <button type="submit" id="edit-submit-btn" class="btn-primary">Save Changes</button>
       </div>
     </form>
   </dialog>
 
   <dialog id="delete-dialog">
-    <h2 id="delete-dialog-title">Delete Inventory Record?</h2>
-    <p id="delete-dialog-message">Are you sure you want to permanently remove this product?</p>
+    <div class="dialog-header">
+      <h2 id="delete-dialog-title">Confirm Delete</h2>
+    </div>
+    <p id="delete-dialog-message" class="dialog-body"></p>
     <form method="dialog" class="dialog-actions">
-      <button id="delete-cancel-btn" value="cancel" class="btn-secondary">Cancel</button>
-      <button id="delete-confirm-btn" value="delete" class="btn-danger">Delete Permanently</button>
+      <button id="delete-cancel-btn" value="cancel" class="btn-ghost">Cancel</button>
+      <button id="delete-confirm-btn" value="delete" class="btn-danger">Delete</button>
     </form>
   </dialog>
 

@@ -36,14 +36,14 @@ INSERT INTO categories (category_name) VALUES
 
 INSERT INTO products (product_name, category, stock_quantity, unit_price, managed_by) VALUES
 ('Heavyweight Drop Shoulder Tee', 'Drop Shoulder T-Shirt', 180, 650.00, 'Orgho'),
-('Acid Wash Oversized Tee', 'Drop Shoulder T-Shirt', 120, 750.00, 'Nafis'),
+('Acid Wash Oversized Tee', 'Drop Shoulder T-Shirt', 120, 750.00, 'Rumon'),
 ('Vintage Streetwear Graphic Tee', 'Graphic T-Shirt', 200, 550.00, 'Orgho'),
-('Urban Typography Print Tee', 'Graphic T-Shirt', 150, 520.00, 'Siam'),
+('Urban Typography Print Tee', 'Graphic T-Shirt', 150, 520.00, 'Fahim'),
 ('Classic Pique Cotton Polo', 'Polo Shirt', 140, 880.00, 'Orgho'),
-('Contrast Collar Tipped Polo', 'Polo Shirt', 110, 920.00, 'Nafis'),
+('Contrast Collar Tipped Polo', 'Polo Shirt', 110, 920.00, 'Rumon'),
 ('Fleece Lined Pullover Hoodie', 'Winter Hoodie', 85, 1450.00, 'Orgho'),
-('Heavyweight Zip-Up Winter Hoodie', 'Winter Hoodie', 65, 1650.00, 'Siam'),
+('Heavyweight Zip-Up Winter Hoodie', 'Winter Hoodie', 65, 1650.00, 'Fahim'),
 ('Embroidered Minimalist Hoodie', 'Winter Hoodie', 75, 1550.00, 'Orgho'),
-('Multi-Pocket Tactical Cargo Pant', 'Cargo & Joggers', 95, 1350.00, 'Nafis'),
+('Multi-Pocket Tactical Cargo Pant', 'Cargo & Joggers', 95, 1350.00, 'Rumon'),
 ('Stretch Twill Slim Joggers', 'Cargo & Joggers', 115, 1100.00, 'Orgho'),
-('Relaxed Fit Ripstop Cargo', 'Cargo & Joggers', 80, 1280.00, 'Siam');
+('Relaxed Fit Ripstop Cargo', 'Cargo & Joggers', 80, 1280.00, 'Fahim');

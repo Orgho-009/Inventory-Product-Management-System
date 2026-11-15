@@ -3,7 +3,7 @@ const bdtFormat = new Intl.NumberFormat('en-IN', {
   maximumFractionDigits: 2,
 });
 const intFormat = new Intl.NumberFormat('en-IN');
-const formatBDT = (amount) => `৳${bdtFormat.format(Number(amount || 0))}`;
+const formatBDT = (amount) => `BDT ${bdtFormat.format(Number(amount || 0))}`;
 
 const statusBanner = document.getElementById('status-banner');
 const sumProductsEl = document.getElementById('sum-products');
@@ -19,6 +19,7 @@ const searchInput = document.getElementById('search-input');
 const categoryFilter = document.getElementById('category-filter');
 const tbody = document.getElementById('inventory-tbody');
 const tableCaption = document.getElementById('inventory-table-caption');
+const recordCountBadge = document.getElementById('record-count-badge');
 
 const editDialog = document.getElementById('edit-dialog');
 const editForm = document.getElementById('edit-product-form');
@@ -397,10 +398,15 @@ function buildQueryString() {
 
 function renderRows(products) {
   currentRecords.clear();
+  // Trigger reflow so row-in animations replay on each render
+  tbody.style.animation = 'none';
+  void tbody.offsetHeight;
+  tbody.style.animation = '';
   tbody.replaceChildren();
 
   const countLabel = products.length === 1 ? '1 item' : `${products.length} items`;
-  tableCaption.textContent = `Saved Inventory Records (${countLabel})`;
+  tableCaption.textContent = `Inventory Records (${countLabel})`;
+  if (recordCountBadge) recordCountBadge.textContent = countLabel;
 
   if (products.length === 0) {
     const tr = document.createElement('tr');
@@ -438,15 +444,28 @@ function renderRows(products) {
 
     const tdStock = document.createElement('td');
     tdStock.className = 'col-center num-cell';
-    if (item.stock_quantity <= 10) {
-      tdStock.classList.add('low-stock');
-      tdStock.textContent = `${intFormat.format(item.stock_quantity)} (Low)`;
+    const qty = item.stock_quantity;
+    const stockWrap = document.createElement('div');
+    stockWrap.className = 'stock-cell';
+    const qtyText = document.createElement('span');
+    qtyText.className = 'num-cell';
+    qtyText.textContent = intFormat.format(qty);
+    const badge = document.createElement('span');
+    if (qty === 0) {
+      badge.className = 'stock-badge stock-badge--low';
+      badge.textContent = 'Out of Stock';
+    } else if (qty < 100) {
+      badge.className = 'stock-badge stock-badge--warn';
+      badge.textContent = 'Low Stock';
     } else {
-      tdStock.textContent = intFormat.format(item.stock_quantity);
+      badge.className = 'stock-badge stock-badge--ok';
+      badge.textContent = 'In Stock';
     }
+    stockWrap.append(qtyText, badge);
+    tdStock.appendChild(stockWrap);
 
     const tdPrice = document.createElement('td');
-    tdPrice.className = 'col-center num-cell';
+    tdPrice.className = 'col-right num-cell';
     tdPrice.textContent = formatBDT(item.unit_price);
 
     const tdManager = document.createElement('td');
@@ -497,7 +516,7 @@ async function loadInventory() {
 
     renderRows(productsData);
     sumProductsEl.textContent = intFormat.format(summaryData.total_products);
-    sumStockEl.textContent = `${intFormat.format(summaryData.total_stock)} units`;
+    sumStockEl.textContent = intFormat.format(summaryData.total_stock);
     avgPriceEl.textContent = formatBDT(summaryData.average_price);
     sumValuationEl.textContent = formatBDT(summaryData.total_inventory_value);
   } catch (err) {
@@ -594,6 +613,7 @@ tbody.addEventListener('click', (e) => {
 });
 
 editCancelBtn.addEventListener('click', () => editDialog.close());
+document.getElementById('edit-cancel-btn-2')?.addEventListener('click', () => editDialog.close());
 editDialog.addEventListener('close', () => {
   if (activeCustomClose) activeCustomClose();
 });

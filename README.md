@@ -29,7 +29,7 @@
 
 <br>
 
-**Date of Submission:** November 05, 2026
+**Date of Submission:** November 16, 2026
 
 </div>
 
@@ -43,7 +43,7 @@ The objective of this project is to develop a single-page web application connec
 
 ### Key Features Implemented:
 1. **Add Records:** Users can add new garment items and create clothing categories from the web interface.
-2. **View Records:** Saved products are displayed in a structured table on the same page with sequential IDs, categories, stock units, prices in Bangladeshi Taka (`৳`), and manager names.
+2. **View Records:** Saved products are displayed in a structured table on the same page with sequential IDs, categories, stock units, prices in Bangladeshi Taka (`BDT`), and manager names.
 3. **Search and Filter:** Users can search products by ID, garment name, category, or manager name, and filter items by category using SQL `WHERE` and `LIKE` conditions.
 4. **Update Records:** Existing product details can be edited and saved using a modal dialog form.
 5. **Delete Records:** Unused categories and product records can be deleted after a confirmation prompt.
@@ -116,7 +116,7 @@ erDiagram
 | `products` | `product_name` | `VARCHAR(100)` | `NOT NULL` | Name of the clothing product |
 | `products` | `category` | `VARCHAR(50)` | `NOT NULL`, `FOREIGN KEY` | References `categories(category_name)` |
 | `products` | `stock_quantity` | `INT` | `NOT NULL`, `CHECK (>= 0)` | Available quantity in stock |
-| `products` | `unit_price` | `DECIMAL(10, 2)` | `NOT NULL`, `CHECK (>= 0.00)` | Unit price in BDT (`৳`) |
+| `products` | `unit_price` | `DECIMAL(10, 2)` | `NOT NULL`, `CHECK (>= 0.00)` | Unit price in Bangladeshi Taka (`BDT`) |
 | `products` | `managed_by` | `VARCHAR(60)` | `NOT NULL` | Name of the store manager |
 
 ---
@@ -161,17 +161,17 @@ INSERT INTO categories (category_name) VALUES
 
 INSERT INTO products (product_name, category, stock_quantity, unit_price, managed_by) VALUES
 ('Heavyweight Drop Shoulder Tee', 'Drop Shoulder T-Shirt', 180, 650.00, 'Orgho'),
-('Acid Wash Oversized Tee', 'Drop Shoulder T-Shirt', 120, 750.00, 'Nafis'),
+('Acid Wash Oversized Tee', 'Drop Shoulder T-Shirt', 120, 750.00, 'Rumon'),
 ('Vintage Streetwear Graphic Tee', 'Graphic T-Shirt', 200, 550.00, 'Orgho'),
-('Urban Typography Print Tee', 'Graphic T-Shirt', 150, 520.00, 'Siam'),
+('Urban Typography Print Tee', 'Graphic T-Shirt', 150, 520.00, 'Fahim'),
 ('Classic Pique Cotton Polo', 'Polo Shirt', 140, 880.00, 'Orgho'),
-('Contrast Collar Tipped Polo', 'Polo Shirt', 110, 920.00, 'Nafis'),
+('Contrast Collar Tipped Polo', 'Polo Shirt', 110, 920.00, 'Rumon'),
 ('Fleece Lined Pullover Hoodie', 'Winter Hoodie', 85, 1450.00, 'Orgho'),
-('Heavyweight Zip-Up Winter Hoodie', 'Winter Hoodie', 65, 1650.00, 'Siam'),
+('Heavyweight Zip-Up Winter Hoodie', 'Winter Hoodie', 65, 1650.00, 'Fahim'),
 ('Embroidered Minimalist Hoodie', 'Winter Hoodie', 75, 1550.00, 'Orgho'),
-('Multi-Pocket Tactical Cargo Pant', 'Cargo & Joggers', 95, 1350.00, 'Nafis'),
+('Multi-Pocket Tactical Cargo Pant', 'Cargo & Joggers', 95, 1350.00, 'Rumon'),
 ('Stretch Twill Slim Joggers', 'Cargo & Joggers', 115, 1100.00, 'Orgho'),
-('Relaxed Fit Ripstop Cargo', 'Cargo & Joggers', 80, 1280.00, 'Siam');
+('Relaxed Fit Ripstop Cargo', 'Cargo & Joggers', 80, 1280.00, 'Fahim');
 ```
 
 ### 4.3 View Records and Categories (`SELECT`)
@@ -228,7 +228,7 @@ FROM products;
 
 | Total Products (`COUNT(*)`) | Total Stock Units (`SUM(stock_quantity)`) | Average Unit Price (`AVG(unit_price)`) | Total Stock Valuation (`SUM(qty * price)`) |
 | :---: | :---: | :---: | :---: |
-| **12** | **1,415 units** | **৳1,054.17** | **৳13,23,300.00** |
+| **12** | **1,415 units** | **BDT 1,054.17** | **BDT 13,23,300.00** |
 
 ---
 

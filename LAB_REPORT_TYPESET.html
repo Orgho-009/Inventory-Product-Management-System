@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LAB PROJECT REPORT - Feni University</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Times New Roman", Times, Georgia, serif;
+    font-size: 8.5pt;
+    line-height: 1.32;
+    color: #111;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pdf-page, .cover-page {
+    width: 210mm;
+    height: 297mm;
+    max-height: 297mm;
+    padding: 14mm 16mm;
+    overflow: hidden;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: always;
+    break-after: page;
+    background: #ffffff;
+    position: relative;
+  }
+
+  .pdf-page:last-child {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  /* Cover Page (Page 1) */
+  .cover-page {
+    padding: 26mm 20mm 20mm 20mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+  }
+
+  .cover-header h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 24pt;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    color: #000;
+  }
+  .cover-header h2 {
+    font-size: 13pt;
+    font-weight: normal;
+    margin-bottom: 4px;
+    color: #222;
+  }
+  .cover-header h3 {
+    font-size: 10.5pt;
+    font-weight: normal;
+    color: #444;
+  }
+
+  .cover-divider {
+    width: 85%;
+    height: 1.5px;
+    background: #222;
+    margin: 16px auto;
+  }
+
+  .cover-title-container {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .cover-badge-box {
+    font-size: 11.5pt;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: #111;
+  }
+  .cover-course-title {
+    font-size: 11.5pt;
+    font-style: italic;
+    color: #333;
+    margin-bottom: 16px;
+  }
+
+  .cover-project-card {
+    border: 1.5px solid #444;
+    background: #fbfbfb;
+    padding: 20px 20px;
+    width: 100%;
+  }
+  .cover-project-card-label {
+    font-size: 9.5pt;
+    font-weight: bold;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  .cover-project-card-title {
+    font-size: 19pt;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 12px;
+    line-height: 1.25;
+  }
+  .cover-project-card-repo {
+    font-size: 9pt;
+    color: #222;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-family: monospace;
+  }
+
+  .cover-meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 10pt;
+    border: 1.5px solid #000;
+  }
+  .cover-meta-table th {
+    width: 50%;
+    padding: 8px 12px;
+    background: #f2f2f2;
+    border: 1.5px solid #000;
+    font-size: 10.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .cover-meta-table td {
+    width: 50%;
+    padding: 10px 12px;
+    border: 1.5px solid #000;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+
+  .cover-date {
+    font-size: 11pt;
+    color: #111;
+    margin-top: 14px;
+  }
+
+  /* Headings & Structure */
+  h2.sec-heading {
+    font-size: 10.5pt;
+    font-weight: bold;
+    margin: 6px 0 3px 0;
+    padding-bottom: 2px;
+    border-bottom: 1.2px solid #222;
+    color: #000;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h3.sub-heading {
+    font-size: 9pt;
+    font-weight: bold;
+    margin: 4px 0 2px 0;
+    color: #222;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  p {
+    margin-bottom: 4px;
+    text-align: justify;
+    line-height: 1.32;
+  }
+
+  ul, ol {
+    margin-left: 16px;
+    margin-bottom: 4px;
+  }
+  li {
+    margin-bottom: 2px;
+    line-height: 1.28;
+  }
+
+  a {
+    color: #0044bb;
+    text-decoration: underline;
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 3px 0 5px 0;
+    font-size: 7.6pt;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #555;
+    padding: 3px 5px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  table.data-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  pre.code-block {
+    background: #fafafa;
+    border: 1px solid #ccc;
+    padding: 3.5px 6px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 6.8pt;
+    line-height: 1.22;
+    margin: 2px 0 4px 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: visible;
+  }
+
+  .two-col-layout {
+    display: flex;
+    gap: 10px;
+    margin: 2px 0 3px 0;
+  }
+  .two-col-layout > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .screenshot-block {
+    margin: 4px 0 6px 0;
+    text-align: center;
+  }
+  .screenshot-block img {
+    border: 1px solid #666;
+    display: block;
+    margin: 0 auto;
+  }
+  .screenshot-caption {
+    font-size: 8.5pt;
+    font-style: italic;
+    font-weight: bold;
+    color: #222;
+    margin-top: 4px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1: COVER PAGE -->
+<div class="cover-page">
+  <div class="cover-header">
+    <h1>FENI UNIVERSITY</h1>
+    <h2>Department of Computer Science and Engineering (CSE)</h2>
+    <h3>Program: Undergraduate Bachelor of Science (B.Sc. in CSE)</h3>
+    <div class="cover-divider"></div>
+  </div>
+
+  <div class="cover-title-container">
+    <div class="cover-badge-box">LAB PROJECT REPORT</div>
+    <div class="cover-course-title">Course Title: Database Management System Lab</div>
+
+    <div class="cover-project-card">
+      <div class="cover-project-card-label">PROJECT TITLE</div>
+      <div class="cover-project-card-title">Orgho's Inventory — Product Management System</div>
+      <div class="cover-project-card-repo"><strong>GitHub Repository:</strong> https://github.com/Orgho-009/Inventory-Product-Management-System</div>
+    </div>
+  </div>
+
+  <table class="cover-meta-table">
+    <thead>
+      <tr>
+        <th>Submitted By</th>
+        <th>Submitted To</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <strong>Name:</strong> Ahmmed Waseg Bin Mizan Orgho<br>
+          <strong>Student ID:</strong> 251031046<br>
+          <strong>Batch:</strong> CSE 34th Batch<br>
+          <strong>Program:</strong> B.Sc. in CSE<br>
+          <strong>Department:</strong> Dept. of CSE, Feni University
+        </td>
+        <td>
+          <strong>Name:</strong> Faria Sultana Bintha Rohman<br>
+          <strong>Designation:</strong> Lab Technical Officer (LTO)<br>
+          <strong>Department:</strong> Dept. of CSE, Feni University
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="cover-date">
+    <strong>Date of Submission:</strong> November 16, 2026
+  </div>
+</div>
+
+<!-- PAGE 2: OBJECTIVE, TOOLS, ER DIAGRAM & SCHEMA -->
+<div class="pdf-page">
+  <h2 class="sec-heading">1. Project Objective</h2>
+  <p>
+    The objective of this lab project is to design and develop a single-page web application connected to a relational database for managing store inventory records. The system demonstrates practical implementation of core SQL operations (<code>CREATE</code>, <code>INSERT</code>, <code>SELECT</code>, <code>WHERE</code>, <code>UPDATE</code>, <code>DELETE</code>) and SQL aggregate functions (<code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>) through a clean, modern user interface. The dataset used in this project represents real apparel and streetwear merchandise records.
+  </p>
+
+  <h3 class="sub-heading">Key Features Implemented:</h3>
+  <div style="display: flex; gap: 14px; margin-bottom: 4px;">
+    <div style="flex: 1;">
+      <ul style="margin-bottom: 0;">
+        <li><strong>1. Add Records:</strong> Add new categories and save product records from the single-page UI.</li>
+        <li><strong>3. Search and Filter:</strong> Search by ID, name, category, or manager and filter by SQL <code>WHERE / LIKE</code>.</li>
+        <li><strong>5. Delete Records:</strong> Delete unused categories and products with foreign-key protection.</li>
+      </ul>
+    </div>
+    <div style="flex: 1;">
+      <ul style="margin-bottom: 0;">
+        <li><strong>2. View Records:</strong> Structured table with sequential IDs, categories, stock, prices (<code>BDT</code>), and managers.</li>
+        <li><strong>4. Update Records:</strong> Edit and update existing product details using a modal dialog form.</li>
+        <li><strong>6. Summary Dashboard:</strong> Live <code>COUNT</code>, <code>SUM</code>, and <code>AVG</code> metrics in Bangladeshi Taka.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec-heading">2. Tools Used &amp; Project File Structure</h2>
+  <p style="margin-bottom: 2px;"><strong>GitHub Repository Link:</strong> <a href="https://github.com/Orgho-009/Inventory-Product-Management-System">https://github.com/Orgho-009/Inventory-Product-Management-System</a></p>
+
+  <div class="two-col-layout">
+    <div style="flex: 1.35;">
+      <h3 class="sub-heading" style="margin-top: 0;">2.1 Technology Stack</h3>
+      <table class="data-table">
+        <thead>
+          <tr><th>Component</th><th>Technology</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Frontend</strong></td><td>HTML5, CSS3, JS (<code>index.html</code>, <code>style.css</code>, <code>script.js</code>)</td><td>Single-page UI, forms, inventory table, search/filter bar, and modal dialogs.</td></tr>
+          <tr><td><strong>Backend</strong></td><td>Node.js, Express (<code>server.js</code>)</td><td>REST API server handling HTTP requests, validation, and SQL execution.</td></tr>
+          <tr><td><strong>DB Driver</strong></td><td><code>mysql2</code></td><td>Connects Node.js with MySQL using parameterized SQL queries.</td></tr>
+          <tr><td><strong>Database</strong></td><td>MySQL (<code>inventory_db</code>)</td><td>Relational database storing <code>categories</code> and <code>products</code> tables.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="flex: 0.85;">
+      <h3 class="sub-heading" style="margin-top: 0;">2.2 Project File Structure</h3>
+      <pre class="code-block" style="margin: 0;">Inventory-Product-Management-System/
+├── database.sql
+├── server.js
+├── package.json
+├── README.md
+├── LAB_REPORT.pdf
+├── public/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+└── screenshots/
+    ├── dashboard-overview.png
+    └── edit-record-modal.png</pre>
+    </div>
+  </div>
+
+  <h2 class="sec-heading">3. Database Table Design &amp; ER Diagram</h2>
+  <p>The database <code>inventory_db</code> contains two related tables: <code>categories</code> (parent table) and <code>products</code> (child table). One category can be associated with multiple products (<strong>1:N relationship</strong>), enforced by a <code>FOREIGN KEY</code> constraint on <code>products.category</code> referencing <code>categories(category_name)</code>.</p>
+
+  <h3 class="sub-heading">3.1 Entity-Relationship (ER) Diagram</h3>
+  <pre class="code-block">+------------------------------+                 +-----------------------------------------------+
+|          CATEGORIES          |                 |                   PRODUCTS                    |
++------------------------------+                 +-----------------------------------------------+
+| PK  category_id INT          | 1 ----------- * | PK  product_id INT                            |
+| UK  category_name VARCHAR(50)|                 |     product_name VARCHAR(100)                 |
++------------------------------+                 | FK  category VARCHAR(50)                      |
+                                                 |     stock_quantity INT                        |
+                                                 |     unit_price DECIMAL(10,2)                  |
+                                                 |     managed_by VARCHAR(60)                    |
+                                                 +-----------------------------------------------+</pre>
+
+  <h3 class="sub-heading">3.2 Table Structure</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Table</th><th>Column Name</th><th>Data Type</th><th>Constraints</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>categories</code></td><td><code>category_id</code></td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td><td>Unique ID for each category</td></tr>
+      <tr><td><code>categories</code></td><td><code>category_name</code></td><td>VARCHAR(50)</td><td>NOT NULL, UNIQUE</td><td>Name of the product category</td></tr>
+      <tr><td><code>products</code></td><td><code>product_id</code></td><td>INT</td><td>PRIMARY KEY, AUTO_INCREMENT</td><td>Sequential ID for each product</td></tr>
+      <tr><td><code>products</code></td><td><code>product_name</code></td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Name of the clothing product</td></tr>
+      <tr><td><code>products</code></td><td><code>category</code></td><td>VARCHAR(50)</td><td>NOT NULL, FOREIGN KEY</td><td>References <code>categories(category_name)</code></td></tr>
+      <tr><td><code>products</code></td><td><code>stock_quantity</code></td><td>INT</td><td>NOT NULL, CHECK (&gt;= 0)</td><td>Available units in stock</td></tr>
+      <tr><td><code>products</code></td><td><code>unit_price</code></td><td>DECIMAL(10,2)</td><td>NOT NULL, CHECK (&gt;= 0.00)</td><td>Unit price in Bangladeshi Taka (<code>BDT</code>)</td></tr>
+      <tr><td><code>products</code></td><td><code>managed_by</code></td><td>VARCHAR(60)</td><td>NOT NULL</td><td>Store manager responsible for the item</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 3: KEY SQL QUERIES (FULL CLEAN PAGE) -->
+<div class="pdf-page">
+  <h2 class="sec-heading">4. Key SQL Queries</h2>
+
+  <h3 class="sub-heading">4.1 Database and Table Creation (<code>CREATE</code>)</h3>
+  <pre class="code-block">CREATE DATABASE IF NOT EXISTS inventory_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE inventory_db;
+
+CREATE TABLE IF NOT EXISTS categories (
+    category_id INT AUTO_INCREMENT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    stock_quantity INT NOT NULL CHECK (stock_quantity >= 0),
+    unit_price DECIMAL(10, 2) NOT NULL CHECK (unit_price >= 0.00),
+    managed_by VARCHAR(60) NOT NULL,
+    CONSTRAINT fk_products_category FOREIGN KEY (category) REFERENCES categories(category_name)
+        ON UPDATE CASCADE ON DELETE RESTRICT
+);</pre>
+
+  <h3 class="sub-heading">4.2 Data Insertion (<code>INSERT</code>)</h3>
+  <pre class="code-block">INSERT INTO categories (category_name) VALUES
+('Cargo & Joggers'), ('Drop Shoulder T-Shirt'), ('Graphic T-Shirt'), ('Polo Shirt'), ('Winter Hoodie');
+
+INSERT INTO products (product_name, category, stock_quantity, unit_price, managed_by) VALUES
+('Heavyweight Drop Shoulder Tee', 'Drop Shoulder T-Shirt', 180, 650.00, 'Orgho'),
+('Acid Wash Oversized Tee', 'Drop Shoulder T-Shirt', 120, 750.00, 'Rumon'),
+('Vintage Streetwear Graphic Tee', 'Graphic T-Shirt', 200, 550.00, 'Orgho'),
+('Urban Typography Print Tee', 'Graphic T-Shirt', 150, 520.00, 'Fahim'),
+('Classic Pique Cotton Polo', 'Polo Shirt', 140, 880.00, 'Orgho'),
+('Contrast Collar Tipped Polo', 'Polo Shirt', 110, 920.00, 'Rumon'),
+('Fleece Lined Pullover Hoodie', 'Winter Hoodie', 85, 1450.00, 'Orgho'),
+('Heavyweight Zip-Up Winter Hoodie', 'Winter Hoodie', 65, 1650.00, 'Fahim'),
+('Embroidered Minimalist Hoodie', 'Winter Hoodie', 75, 1550.00, 'Orgho'),
+('Multi-Pocket Tactical Cargo Pant', 'Cargo & Joggers', 95, 1350.00, 'Rumon'),
+('Stretch Twill Slim Joggers', 'Cargo & Joggers', 115, 1100.00, 'Orgho'),
+('Relaxed Fit Ripstop Cargo', 'Cargo & Joggers', 80, 1280.00, 'Fahim');</pre>
+
+  <div class="two-col-layout">
+    <div>
+      <h3 class="sub-heading">4.3 View Records &amp; Categories (<code>SELECT</code>)</h3>
+      <pre class="code-block">SELECT c.category_id, c.category_name,
+       COUNT(p.product_id) AS product_count
+FROM categories c
+LEFT JOIN products p ON p.category = c.category_name
+GROUP BY c.category_id, c.category_name
+ORDER BY c.category_name ASC;
+
+SELECT product_id, product_name, category,
+       stock_quantity, unit_price, managed_by
+FROM products ORDER BY product_id ASC;</pre>
+    </div>
+    <div>
+      <h3 class="sub-heading">4.4 Search &amp; Filter (<code>WHERE &amp; LIKE</code>)</h3>
+      <pre class="code-block">SELECT product_id, product_name, category,
+       stock_quantity, unit_price, managed_by
+FROM products
+WHERE (product_id = 1
+   OR product_name LIKE '%Hoodie%'
+   OR category LIKE '%Hoodie%'
+   OR managed_by LIKE '%Hoodie%')
+  AND category = 'Winter Hoodie'
+ORDER BY product_id ASC;</pre>
+    </div>
+  </div>
+
+  <div class="two-col-layout">
+    <div>
+      <h3 class="sub-heading">4.5 Update Record (<code>UPDATE with WHERE</code>)</h3>
+      <pre class="code-block">UPDATE products
+SET product_name = 'Heavyweight Drop Shoulder Tee',
+    category = 'Drop Shoulder T-Shirt',
+    stock_quantity = 180,
+    unit_price = 650.00, managed_by = 'Orgho'
+WHERE product_id = 1;</pre>
+    </div>
+    <div>
+      <h3 class="sub-heading">4.6 Delete Record (<code>DELETE with WHERE</code>)</h3>
+      <pre class="code-block">DELETE FROM products
+WHERE product_id = 12;
+
+DELETE FROM categories
+WHERE category_id = 5;</pre>
+    </div>
+  </div>
+
+  <h3 class="sub-heading">4.7 Summary Queries Using Aggregate Functions (<code>COUNT</code>, <code>SUM</code>, <code>AVG</code>)</h3>
+  <pre class="code-block">SELECT COUNT(*) AS total_products, COALESCE(SUM(stock_quantity), 0) AS total_stock,
+       COALESCE(ROUND(AVG(unit_price), 2), 0) AS average_price,
+       COALESCE(ROUND(SUM(stock_quantity * unit_price), 2), 0) AS total_inventory_value
+FROM products;</pre>
+
+  <table class="data-table" style="text-align: center; margin-top: 3px;">
+    <thead>
+      <tr>
+        <th style="text-align: center;">Total Products (<code>COUNT(*)</code>)</th>
+        <th style="text-align: center;">Total Stock Units (<code>SUM(stock_quantity)</code>)</th>
+        <th style="text-align: center;">Average Unit Price (<code>AVG(unit_price)</code>)</th>
+        <th style="text-align: center;">Total Stock Valuation (<code>SUM(qty * price)</code>)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align: center; font-weight: bold; font-size: 8.5pt;">12</td>
+        <td style="text-align: center; font-weight: bold; font-size: 8.5pt;">1,415 units</td>
+        <td style="text-align: center; font-weight: bold; font-size: 8.5pt;">BDT 1,054.17</td>
+        <td style="text-align: center; font-weight: bold; font-size: 8.5pt;">BDT 13,23,300.00</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PAGE 4: FIGURE 1 SCREENSHOT (PROPORTIONATE FULL PAGE) -->
+<div class="pdf-page">
+  <h2 class="sec-heading">5. Screenshots of the Working Application</h2>
+  <div class="screenshot-block" style="margin-top: 10px;">
+    <img src="./screenshots/dashboard-overview.png" alt="Main Single-Page Inventory Interface" style="max-width: 100%; max-height: 235mm; width: auto; height: auto;">
+    <div class="screenshot-caption" style="margin-top: 8px; font-size: 9pt;">Figure 1: Main Single-Page Inventory Management Interface (12 Real Products)</div>
+  </div>
+</div>
+
+<!-- PAGE 5: FIGURE 2 SCREENSHOT + SECTION 6 & 7 (FULL BALANCED PAGE) -->
+<div class="pdf-page">
+  <div class="screenshot-block" style="margin-top: 4px; margin-bottom: 8px;">
+    <img src="./screenshots/edit-record-modal.png" alt="Update Product Record Modal Dialog" style="max-height: 125mm; max-width: 90%; width: auto; height: auto;">
+    <div class="screenshot-caption" style="margin-top: 5px; font-size: 8.5pt;">Figure 2: Update Product Record Modal Dialog</div>
+  </div>
+
+  <h2 class="sec-heading">6. How to Run the Project</h2>
+  <ol style="margin-bottom: 6px;">
+    <li><strong>GitHub Repository:</strong> <a href="https://github.com/Orgho-009/Inventory-Product-Management-System">https://github.com/Orgho-009/Inventory-Product-Management-System</a></li>
+    <li><strong>Database Setup:</strong> Start local MySQL server (such as XAMPP on <code>localhost:3306</code> with user <code>root</code>) and import <code>database.sql</code>, or simply start the Node.js server which initializes the schema and records automatically.</li>
+    <li><strong>Install Dependencies and Start Server:</strong>
+      <pre class="code-block" style="display: inline-block; padding: 3px 10px; margin: 2px 0;">npm install
+npm start</pre>
+    </li>
+    <li><strong>Open in Browser:</strong> Visit <code>http://localhost:3000</code> in any web browser.</li>
+  </ol>
+
+  <h2 class="sec-heading">7. Conclusion</h2>
+  <p>
+    This project implements a complete single-page <strong>Inventory / Product Management System</strong> using HTML5, CSS3, JavaScript, Node.js, Express, and MySQL. It satisfies all requirements of the Database Management System Lab by demonstrating relational schema design with primary and foreign keys, CRUD operations, search and category filtering with SQL <code>WHERE</code> conditions, and real-time summary calculations using SQL aggregate functions (<code>COUNT</code>, <code>SUM</code>, and <code>AVG</code>). Complete source code files are available in the GitHub repository.
+  </p>
+</div>
+
+</body>
+</html>
